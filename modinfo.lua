@@ -1,7 +1,7 @@
 name = "Choke-o-Bons"
 description = "A rare bag of chocolate bonbons, found sparingly across the world. Each bag holds a secret number of treats (1 to 8). Eat one and feel better... until the bag runs dry. Use an empty one and it bites back, then falls apart."
 author = "xumi"
-version = "1.0.5"
+version = "1.0.6"
 api_version = 10
 dst_compatible = true
 all_clients_require_mod = true

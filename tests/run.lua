@@ -65,7 +65,12 @@ local function new_game(opts)
     G.FRAMES = 1 / 30
     G.FOODTYPE = { GOODIES = "GOODIES", MEAT = "MEAT" }
     G.TUNING = {}           -- the game replaces this table on world load, so it starts empty
-    G.STRINGS = { NAMES = {}, CHARACTERS = { GENERIC = { DESCRIBE = {} } } }
+    -- Keys of STRINGS.CHARACTERS in the game (strings.lua). Wes has none: he is a mime.
+    G.STRINGS = { NAMES = {}, CHARACTERS = {} }
+    for _, key in ipairs({ "GENERIC", "WAXWELL", "WOLFGANG", "WX78", "WILLOW", "WENDY", "WOODIE", "WICKERBOTTOM",
+            "WATHGRITHR", "WEBBER", "WINONA", "WORTOX", "WORMWOOD", "WARLY", "WURT", "WALTER", "WANDA" }) do
+        G.STRINGS.CHARACTERS[key] = { DESCRIBE = {} }
+    end
 
     function G.Asset(kind, file) return { kind = kind, file = file } end
     function G.Prefab(name, fn, assets) return { name = name, fn = fn, assets = assets or {} } end
@@ -254,10 +259,18 @@ test("modmain.lua loads in the strict mod environment (no STRINGS/TheWorld/TUNIN
     eq(env.PrefabFiles[1], "chokeobon", "PrefabFiles")
 end)
 
-test("modmain.lua writes strings and registers the inventory icon", function()
+test("modmain.lua writes the name, an inspect text for every character, and registers the icon", function()
     local game, hooks = setup()
     eq(game.G.STRINGS.NAMES.CHOKEOBON, "Choke-o-Bon", "item name")
-    check(game.G.STRINGS.CHARACTERS.GENERIC.DESCRIBE.CHOKEOBON ~= nil, "inspect string")
+    local count, seen = 0, {}
+    for key, tbl in pairs(game.G.STRINGS.CHARACTERS) do
+        local text = tbl.DESCRIBE.CHOKEOBON
+        check(type(text) == "string" and #text > 5, "no inspect text for " .. key)
+        check(not seen[text], "two characters share the inspect text of " .. key)
+        seen[text] = true
+        count = count + 1
+    end
+    eq(count, 17, "characters covered")
     eq(hooks.atlas[2], "chokeobon.tex", "atlas tex")
 end)
 

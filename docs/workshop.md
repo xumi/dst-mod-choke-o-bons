@@ -59,6 +59,9 @@ Item, Food, Funny (use whichever of these the uploader offers)
 
 ## Changelog
 
+**1.0.6**
+- Every character now has their own inspect text for the bag
+
 **1.0.5**
 - Warly can eat it now
 

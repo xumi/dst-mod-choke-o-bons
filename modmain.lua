@@ -17,7 +17,35 @@ local PIGKING_CHANCE = GetModConfigData("pigking_chance")
 
 STRINGS.NAMES.CHOKEOBON = "Choke-o-Bon"
 
-STRINGS.CHARACTERS.GENERIC.DESCRIBE.CHOKEOBON = "A rare little treat. Don't mind if I do."
+-- What each character says when inspecting the bag. Keys are the game's STRINGS.CHARACTERS keys:
+-- GENERIC is Wilson's table and is also the fallback for modded characters. Wes (a mime) needs
+-- none; the game blanks his inspect text.
+local INSPECT =
+{
+    GENERIC = "A rare little treat. I wonder how many are left inside.",
+    WILLOW = "Chocolates! Shame they'd only melt if I burned them.",
+    WOLFGANG = "Little bag of sweets! Wolfgang wonders how many are inside. Wolfgang is not good at counting.",
+    WENDY = "A bag of sweetness. It will be empty soon enough. Everything is.",
+    WX78 = "SUGAR CONTAINER. REMAINING DOSES: UNKNOWN. ANNOYING.",
+    WICKERBOTTOM = "A confection of indeterminate quantity. I suspect the last piece carries a sting.",
+    WOODIE = "Fancy chocolates, eh? Lucy says there's a catch. Lucy's usually right.",
+    WAXWELL = "A bag of sweets. I'd wager the last one costs more than the first.",
+    WATHGRITHR = "A treasure bag of sweets! Even Valhalla's feasts began with less.",
+    WEBBER = "Chocolates! Can we eat them all? ...What if there's a trick?",
+    WINONA = "No label saying how many are inside. Bad design. I'd have fitted a gauge.",
+    WORTOX = "Hyuyu! A bag of sweets with a secret. I do love a secret.",
+    WORMWOOD = "Bag. Smells sweet. Friend not sure how many inside.",
+    WARLY = "Chocolate bonbons! A cook's delight. Shame the supply is a mystery.",
+    WURT = "Flort! Sweets! Wurt wonders if an empty bag is mean.",
+    WALTER = "Looks like candy, Woby. Might be a prank bag, though. Let's be careful.",
+    WANDA = "A bag of sweets. Is the last one really the last? It never is... until it is.",
+}
+
+for character, text in pairs(INSPECT) do
+    if STRINGS.CHARACTERS[character] ~= nil then -- skip any the game version does not have
+        STRINGS.CHARACTERS[character].DESCRIBE.CHOKEOBON = text
+    end
+end
 
 -- Only pigs, merms and bunnymen can drop one, and only rarely, when they are killed.
 -- Hooked per prefab: a component post-init runs before the game has set inst.prefab,
