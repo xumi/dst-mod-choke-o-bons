@@ -27,8 +27,8 @@ configuration_options =
     },
     {
         name = "drop_chance",
-        label = "Random drop chance",
-        hover = "Chance that any creature or object that drops loot also drops a Choke-o-Bon",
+        label = "Pig, merm and bunnyman drop chance",
+        hover = "Chance that a pig, a merm or a bunnyman drops a Choke-o-Bon when killed",
         options =
         {
             {description = "0.1%", data = 0.001},

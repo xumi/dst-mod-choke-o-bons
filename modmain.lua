@@ -19,8 +19,21 @@ STRINGS.NAMES.CHOKEOBON = "Choke-o-Bon"
 
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.CHOKEOBON = "A rare little treat. Don't mind if I do."
 
--- Runtime: a tiny chance on any loot drop (mobs, mined rocks, chopped trees...).
+-- Only pigs, merms and bunnymen can drop one, and only rarely, when they are killed.
+local DROPPERS =
+{
+    pigman = true,
+    pigguard = true,
+    merm = true,
+    mermguard = true,
+    bunnyman = true,
+}
+
 AddComponentPostInit("lootdropper", function(self)
+    if not DROPPERS[self.inst.prefab] then
+        return
+    end
+
     local old_DropLoot = self.DropLoot
     function self:DropLoot(pt, ...)
         old_DropLoot(self, pt, ...)

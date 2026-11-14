@@ -16,7 +16,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
 ## Where to find it
 
 - On the map: a fixed small number (3 by default) are scattered at random over the surface world the first time it loads with the mod enabled. Existing worlds get them too, once.
-- Random drops: a small chance on anything that drops loot (mobs, mined rocks, chopped trees, ...).
+- Kills: a 0.5% chance when you kill a pig (including guards), a merm (including guards) or a bunnyman.
 - The Pig King: a very small chance of a bonus when you trade with him.
 
 For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops one at your feet.
@@ -26,7 +26,7 @@ For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops o
 | Option | Choices | Default |
 |---|---|---|
 | Items on the map | 3, 6, 12 | 3 |
-| Random drop chance | 0.1%, 0.5%, 1% | 0.5% |
+| Pig, merm and bunnyman drop chance | 0.1%, 0.5%, 1% | 0.5% |
 | Pig King chance | Off, 0.5%, 1%, 3% | 0.5% |
 
 ## Install
@@ -68,4 +68,4 @@ The world model (`anim/chokeobon.zip`) is a static one-frame animation generated
 
 ## Status
 
-Early version, tested in game: the mod loads, world generation works, and eating a Choke-o-Bon (stats, emotes, replacement bag) works. Not yet confirmed: the Pig King bonus, the loot drops, the map scatter count, the break sound, and the colours and size of the world model.
+Early version, tested in game: the mod loads, world generation works, and eating a Choke-o-Bon (stats, emotes) works. Not yet confirmed: the Pig King bonus, the loot drops, the map scatter count, the break sound, and the colours and size of the world model.
