@@ -507,6 +507,14 @@ test("the item has the pieces the game needs (food type, icon, model)", function
     eq(bank, "chokeobon", "animation bank")
 end)
 
+test("Warly can eat it: it carries the tag his diet requires (Eater:PrefersToEat)", function()
+    local game = setup()
+    local item = new_item(game)
+    check(item:HasTag("pre-preparedfood") or item:HasTag("preparedfood"),
+        "without one of these tags Warly spits the food out")
+    check(not item:HasTag("preparedfood"), "the full 'preparedfood' tag also opens the spice station and more; use pre-preparedfood")
+end)
+
 test("the number of uses is rolled once on first pickup, between 1 and 8, and saved", function()
     local game = setup()
     for n = 1, 20 do

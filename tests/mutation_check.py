@@ -31,6 +31,7 @@ M = [
  ("Pig King bonus given instantly (not after his coin toss)", "modmain.lua", rep("king:DoTaskInTime(2 / 3, Launch, giver)", "Launch(king, giver)")),
  ("Pig King bonus on the minigame token", "modmain.lua", rep("(tradable.goldvalue or 0) > 0 and ", "")),
  ("emote sound = true (crashed the server)", "scripts/prefabs/chokeobon.lua", rep('Emote(doer, { anim = "emoteXL_happycheer" })', 'Emote(doer, { anim = "emoteXL_happycheer", sound = true })')),
+ ("Warly cannot eat it (tag missing)", "scripts/prefabs/chokeobon.lua", rep('inst:AddTag("pre-preparedfood")', '')),
  ("mime made to cry out", "scripts/prefabs/chokeobon.lua", rep(' and not doer:HasTag("mime")', '')),
  ("bag removed on every bite (no handleremovefn)", "scripts/prefabs/chokeobon.lua", rep("    inst.components.edible.handleremovefn = HandleEatRemove\n", "")),
  ("empty bag not destroyed", "scripts/prefabs/chokeobon.lua", rep("inst._spent = true", "inst._spent = false")),

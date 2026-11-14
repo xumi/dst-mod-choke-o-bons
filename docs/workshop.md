@@ -49,7 +49,7 @@ You never know which bite is the last one. Be careful with that last point of he
 **Notes**
 - This mod must be enabled by everyone on the server.
 - The map items are placed when the world first loads, so enabling the mod on an existing world scatters them once.
-- Works with every vanilla character; modded characters get a default line.
+- Works with every vanilla character, including Warly; modded characters get a default line.
 
 Found a bug or have an idea? Leave a comment or open an issue on GitHub: https://github.com/xumi/dst-mod-choke-o-bons
 
@@ -58,6 +58,9 @@ Found a bug or have an idea? Leave a comment or open an issue on GitHub: https:/
 Item, Food, Funny (use whichever of these the uploader offers)
 
 ## Changelog
+
+**1.0.5**
+- Warly can eat it now
 
 **1.0.4**
 - Emotes now match the game's own cheer and sad emotes: the sad one includes the tears effect, and mimes stay silent

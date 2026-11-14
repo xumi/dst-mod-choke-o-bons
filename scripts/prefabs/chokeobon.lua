@@ -145,6 +145,9 @@ local function fn()
     inst.AnimState:PlayAnimation("idle")
 
     inst:AddTag("cattoy")
+    -- Warly only eats foods tagged "preparedfood" or "pre-preparedfood" (Eater:PrefersToEat).
+    -- The game's candy uses the second one, which nothing else in the game reads.
+    inst:AddTag("pre-preparedfood")
 
     inst.entity:SetPristine()
 
