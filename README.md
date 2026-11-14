@@ -78,4 +78,4 @@ The world model (`anim/chokeobon.zip`) is a static one-frame animation generated
 
 ## Status
 
-Version 1.0.0. Confirmed in game: the mod loads, eating works (stats, emotes, the bag staying in your inventory), and the world model and its click box. Not yet confirmed: the Pig King bonus, the pig/merm/bunnyman drops, the map scatter count, and the break sound.
+Version 1.0.4. Confirmed in game: the mod loads, the map scatter, eating (stats, the bag staying in your inventory), and the world model with its click box. Not yet confirmed in game: the Pig King bonus, the pig/merm/bunnyman drops, and the updated emotes (tears effect, voices) and break sound.
