@@ -20,18 +20,6 @@ configuration_options =
         default = 0,
     },
     {
-        name = "model_variant",
-        label = "Model variant (debug)",
-        hover = "Click-box experiment: 1 = as Klei's compiler writes it, 2 = same with the bottom edge fixed, 3 = like 1 but larger",
-        options =
-        {
-            {description = "1 (official)", data = 1},
-            {description = "2 (bottom fixed)", data = 2},
-            {description = "3 (larger)", data = 3},
-        },
-        default = 1,
-    },
-    {
         name = "map_amount",
         label = "Items on the map",
         hover = "How many Choke-o-Bons are scattered across the surface world when it first loads",

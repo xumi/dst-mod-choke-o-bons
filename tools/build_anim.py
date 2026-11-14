@@ -1,22 +1,16 @@
 #!/usr/bin/env python3
 """Builds anim/chokeobon.zip (a static one-frame Klei animation) from a PNG.
 
-Usage: build_anim.py <sprite.png> <out_dir> [variant]
+Usage: build_anim.py <sprite.png> <out_dir>
 
 The boxes follow Klei's own compiler (ds_mod_tools: src/app/scml/main.cpp and
 buildanimation.py):
   * build file: one box per symbol frame, (x, y, w, h) with x, y the CENTRE of the image
     and w, h whole numbers;
   * anim file: per frame, the union of the build boxes moved by each element's matrix,
-    then enlarged by 1.2 about its centre. The compiler treats (x, y) as a corner and
-    computes the bottom edge from the left edge; that quirk is reproduced on purpose,
-    since vanilla items are built with it.
-
-Variants (the real model is variant 1, named "chokeobon"; the others are "chokeobon_v2"
-and "chokeobon_v3"):
-  1: exactly what Klei's compiler writes
-  2: same, but with the bottom edge computed from the top edge
-  3: same as 1, with the anim box a further 1.6x larger
+    then enlarged by 1.2 about its centre. The compiler computes the bottom edge from the
+    left edge, which makes the box too tall; here it is computed from the top edge, which
+    is what gave an accurate click area in game.
 
 Needs `ktech` on the PATH. The sprite is trimmed, fitted into a 256x256 atlas
 and shown as a single "idle" frame in the "chokeobon" bank/build.
@@ -24,7 +18,6 @@ and shown as a single "idle" frame in the "chokeobon" bank/build.
 import math, os, struct, subprocess, sys, zipfile, tempfile
 
 NAME = "chokeobon"
-VARIANT = 1
 ATLAS = 256
 WORLD_HEIGHT = 150.0  # height of the sprite in world units; tweak to resize and rebuild
 
@@ -34,10 +27,10 @@ def anim_box(w, h, ty):
     x1 = 0.0
     x2 = x1 + w
     y1 = ty
-    y2 = (y1 if VARIANT == 2 else x1) + h     # the compiler uses x1 here (variant 1 and 3)
+    y2 = y1 + h   # Klei's compiler uses x1 here, which makes the box too tall
     bw, bh = int(math.ceil(x2 - x1)), int(math.ceil(y2 - y1))
     bx, by = x1, y1
-    scale = 1.2 * (1.6 if VARIANT == 3 else 1.0)
+    scale = 1.2
     nw, nh = int(math.ceil(scale * bw)), int(math.ceil(scale * bh))
     bx += bw / 2.0 - nw / 2.0
     by += bh / 2.0 - nh / 2.0
@@ -102,11 +95,7 @@ def anim_bin(w, h):
 
 
 def main():
-    global NAME, VARIANT
     src, out_dir = sys.argv[1], sys.argv[2]
-    VARIANT = int(sys.argv[3]) if len(sys.argv) > 3 else 1
-    if VARIANT != 1:
-        NAME = "chokeobon_v%d" % VARIANT
     os.makedirs(out_dir, exist_ok=True)
     tmp = tempfile.mkdtemp()
     atlas_png = os.path.join(tmp, "atlas-0.png")

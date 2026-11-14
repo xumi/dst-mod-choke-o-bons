@@ -57,7 +57,7 @@ A GitHub Actions workflow (`.github/workflows/package.yml`) does this on every p
 
 ## Debugging
 
-The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed. A temporary "Model variant (debug)" setting switches between three ground models that differ only in the click box. Variant 1 follows Klei's own compiler exactly; the others are small variations. It will be removed once the click box is settled.
+The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed.
 
 ## Art
 
