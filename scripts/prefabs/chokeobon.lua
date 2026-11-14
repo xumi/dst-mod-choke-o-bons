@@ -4,7 +4,7 @@ local assets =
 }
 
 -- Size of the model on the ground (1 = as built). Raise it to make the item bigger.
-local WORLD_SCALE = 2.2
+local WORLD_SCALE = 1.87
 
 local MIN_USES = 1
 local MAX_USES = 8

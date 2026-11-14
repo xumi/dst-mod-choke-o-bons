@@ -11,6 +11,7 @@ import os, struct, subprocess, sys, zipfile, tempfile
 NAME = "chokeobon"
 ATLAS = 256
 WORLD_HEIGHT = 80.0   # height of the sprite in world units; tweak to resize
+HITBOX_PAD = 1.7      # the clickable box is the sprite size times this, so the item is easy to click
 
 
 def strhash(s):
@@ -59,7 +60,9 @@ def anim_bin(w, h):
     out += struct.pack("<f", 30.0)
     out += struct.pack("<I", 1)                   # frames
     # frame: bbox, events, elements
-    out += struct.pack("<ffffII", -w / 2.0, -h, w, h, 0, 1)
+    # The box is centred on the sprite (whose centre is h/2 above the ground)
+    bw, bh = w * HITBOX_PAD, h * HITBOX_PAD
+    out += struct.pack("<ffffII", -bw / 2.0, -h / 2.0 - bh / 2.0, bw, bh, 0, 1)
     # element: symbol hash, build frame, layer hash, matrix a b c d tx ty, z
     out += struct.pack("<III", sym, 0, sym)
     out += struct.pack("<6f", 1, 0, 0, 1, 0, -h / 2.0)
