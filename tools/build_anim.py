@@ -3,10 +3,10 @@
 
 Usage: build_anim.py <sprite.png> <out_dir> [variant]
 
-The click box seems to be read by the game at a smaller scale than the sprite and with
-the vertical axis pointing up, so the box is the sprite size times a padding factor.
-Variants try different factors (1: 2.0, 2: 2.6, 3: 3.4); variant 1 is the real model
-name ("chokeobon"), the others are "chokeobon_v2" and "chokeobon_v3".
+Click box experiments. The animation file and the build file each hold a box, and it is
+not known which one the game uses for picking, so each variant sets their size separately
+(as a factor of the sprite size). Variant 1 is the real model name ("chokeobon"); the
+others are "chokeobon_v2" and "chokeobon_v3".
 
 Needs `ktech` on the PATH. The sprite is trimmed, fitted into a 256x256 atlas
 and shown as a single "idle" frame in the "chokeobon" bank/build.
@@ -17,7 +17,8 @@ NAME = "chokeobon"
 VARIANT = 1
 ATLAS = 256
 WORLD_HEIGHT = 150.0  # height of the sprite in world units; tweak to resize and rebuild
-HITBOX_PADS = {1: 2.0, 2: 2.6, 3: 3.4}   # click box size relative to the sprite, per variant
+# variant: (anim file box factor, build file box factor)
+HITBOX_PADS = {1: (1.6, 1.2), 2: (1.2, 1.6), 3: (1.6, 1.6)}
 
 
 def strhash(s):
@@ -49,7 +50,7 @@ def build_bin(w, h, u0, v0, u1, v1):
     out += struct.pack("<I", sym)
     out += struct.pack("<I", 1)                   # symbol frame count
     # Frame bbox is measured from the sprite's centre, so it must be centred too
-    pad = HITBOX_PADS[VARIANT]
+    pad = HITBOX_PADS[VARIANT][1]
     bw, bh = w * pad, h * pad
     out += struct.pack("<IIffffII", 0, 1, -bw / 2.0, -bh / 2.0, bw, bh, 0, 6)
     out += struct.pack("<I", 6)                   # total vertices
@@ -70,7 +71,7 @@ def anim_bin(w, h):
     out += struct.pack("<I", 1)                   # frames
     # frame: bbox, events, elements
     # The box is centred on the sprite (whose centre is h/2 above the ground)
-    pad = HITBOX_PADS[VARIANT]
+    pad = HITBOX_PADS[VARIANT][0]
     bw, bh = w * pad, h * pad
     # y points up for this box, so the sprite's centre is h/2 above the ground
     out += struct.pack("<ffffII", -bw / 2.0, h / 2.0 - bh / 2.0, bw, bh, 0, 1)

@@ -57,7 +57,7 @@ A GitHub Actions workflow (`.github/workflows/package.yml`) does this on every p
 
 ## Debugging
 
-The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed. A temporary "Model variant (debug)" setting switches between three ground models that differ only in the size of their click box (the game reads the box with the vertical axis pointing up and at a smaller scale than the sprite). It will be removed once the click box size is settled.
+The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed. A temporary "Model variant (debug)" setting switches between three ground models that differ only in the click boxes stored in their animation and build files. It will be removed once the click box is sorted out.
 
 ## Art
 

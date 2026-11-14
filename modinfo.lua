@@ -22,12 +22,12 @@ configuration_options =
     {
         name = "model_variant",
         label = "Model variant (debug)",
-        hover = "Click-box experiment: the click area gets bigger from 1 to 3",
+        hover = "Click-box experiment: 1 = bigger anim box, 2 = bigger build box, 3 = both bigger",
         options =
         {
-            {description = "1 (smaller)", data = 1},
-            {description = "2 (medium)", data = 2},
-            {description = "3 (larger)", data = 3},
+            {description = "1 (anim box)", data = 1},
+            {description = "2 (build box)", data = 2},
+            {description = "3 (both)", data = 3},
         },
         default = 2,
     },
