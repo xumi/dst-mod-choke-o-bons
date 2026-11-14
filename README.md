@@ -10,7 +10,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
   - +1 hunger
   - +20 sanity
   - a happy emote
-- Using an empty Choke-o-Bon costs 100 sanity and plays a very sad emote with the character's voice. The item is not consumed.
+- Using an empty Choke-o-Bon costs 100 sanity, plays a very sad emote with the character's voice, and destroys the bag with a break sound.
 - The health loss can kill the player.
 
 ## Where to find it
@@ -41,7 +41,9 @@ modmain.lua                    Worldgen placement, loot drops, Pig King hook
 scripts/prefabs/chokeobon.lua  The item: uses, stats, emotes
 images/inventoryimages/        Inventory icon (.tex + atlas .xml)
 modicon.tex / modicon.xml      Mod icon shown in the Mods screen
-art/build/                     PNG sources for the icons
+anim/chokeobon.zip             World model (static one-frame animation)
+art/                           Source drawing and PNG sources for the icons
+tools/build_anim.py            Generates the world model
 ```
 
 ## Art
@@ -53,8 +55,8 @@ ktech art/build/chokeobon.png images/inventoryimages/chokeobon.tex
 ktech art/build/modicon.png modicon.tex
 ```
 
-The item currently uses a tinted gold nugget model on the ground. A custom world animation (`anim/*.zip`) still needs to be built with Klei's Mod Tools.
+The world model (`anim/chokeobon.zip`) is a static one-frame animation generated from the same artwork by `tools/build_anim.py` (needs `ktech` and ImageMagick). The source drawing is `art/source/chokeobon.svg`. To resize the item on the ground, change `WORLD_HEIGHT` in the script and rebuild.
 
 ## Status
 
-Early version. The Lua passes a syntax check, but the mod has not been run in the game yet. The emotes, the Pig King hook and the world generation placement were written from memory of the game's API and may need adjustments.
+Early version. The Lua passes a syntax check, but the mod has not been run in the game yet. The emotes, the break sound, the Pig King hook, the world generation placement and the hand-built world model were written without access to the game's files and may need adjustments.

@@ -1,6 +1,6 @@
 local assets =
 {
-    Asset("ANIM", "anim/gold_nugget.zip"),
+    Asset("ANIM", "anim/chokeobon.zip"),
 }
 
 local MIN_USES = 1
@@ -62,6 +62,11 @@ local function OnUse(inst)
     else
         if doer.components.sanity ~= nil then doer.components.sanity:DoDelta(EMPTY_SANITY_PENALTY) end
         EmoteVerySad(doer)
+        -- The empty bag is spent for good once it has bitten back
+        if doer.SoundEmitter ~= nil then
+            doer.SoundEmitter:PlaySound("dontstarve/wilson/use_break")
+        end
+        inst:Remove()
     end
 
     return true
@@ -86,10 +91,9 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("gold_nugget")
-    inst.AnimState:SetBuild("gold_nugget")
+    inst.AnimState:SetBank("chokeobon")
+    inst.AnimState:SetBuild("chokeobon")
     inst.AnimState:PlayAnimation("idle")
-    inst.AnimState:SetMultColour(0.55, 0.3, 0.15, 1) -- chocolate tint
 
     inst:AddTag("cattoy")
 

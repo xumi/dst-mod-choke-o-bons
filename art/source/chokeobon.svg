@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512"><defs><filter id="w" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="7"/></filter><pattern id="h" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><line x1="0" y1="0" x2="0" y2="9" stroke="#2a1a10" stroke-width="1.6" opacity=".3"/></pattern></defs><g filter="url(#w)" stroke="#1a110b" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+<path d="M150 110 C130 180 112 250 126 300 C112 360 124 410 134 440 C210 458 300 458 378 440 C392 400 400 350 388 300 C402 240 390 170 362 110 Z" fill="#f1e7cf"/>
+<path d="M150 110 C130 180 112 250 126 300 C112 360 124 410 134 440 C210 458 300 458 378 440 C392 400 400 350 388 300 C402 240 390 170 362 110 Z" fill="url(#h)" stroke="none"/>
+<path d="M150 112 C118 84 122 44 150 34 C200 24 318 24 362 34 C392 44 394 84 362 112 C320 128 190 128 150 112 Z" fill="#d8501f"/>
+<path d="M196 56 C230 100 280 100 316 56" fill="none" stroke="#8f2a10" stroke-width="5"/>
+<path d="M150 112 C118 84 122 44 150 34 C200 24 318 24 362 34 C392 44 394 84 362 112 C320 128 190 128 150 112 Z" fill="url(#h)" stroke="none"/>
+<path d="M134 404 C190 384 320 384 380 404 C386 424 384 440 380 448 C300 464 214 464 132 448 C128 432 128 416 134 404 Z" fill="#d8501f"/>
+<path d="M134 404 C190 384 320 384 380 404 C386 424 384 440 380 448 C300 464 214 464 132 448 C128 432 128 416 134 404 Z" fill="url(#h)" stroke="none"/>
+<path d="M166 172 q24 -30 52 -8 q22 14 48 -6 q28 -18 54 6 q-4 34 -36 32 q-22 -2 -40 12 q-28 12 -54 -6 q-16 -10 -24 -30 Z" fill="#37a8dc"/>
+<path d="M186 180 q20 -12 38 0 M250 176 q22 -12 42 2" fill="none" stroke="#e8f6ff" stroke-width="5"/>
+<path d="M176 230 q40 -22 80 0 q50 -22 82 4 q-6 28 -42 28 q-40 8 -80 0 q-34 4 -40 -32 Z" fill="#7a4a2a"/>
+<path d="M196 238 q24 -10 44 0 M268 238 q24 -10 44 2" fill="none" stroke="#e8d08a" stroke-width="5"/>
+<path d="M232 340 L204 322 L208 362 Z M314 340 L342 322 L338 362 Z" fill="#d8501f" stroke-width="6"/>
+<circle cx="273" cy="340" r="42" fill="#8a5330"/>
+<path d="M250 336 q0 -22 23 -22 q23 0 23 22 q0 12 -8 16 l0 10 l-30 0 l0 -10 q-8 -4 -8 -16 Z" fill="#f1e7cf" stroke-width="4"/>
+<circle cx="263" cy="338" r="5" fill="#1a110b" stroke="none"/><circle cx="283" cy="338" r="5" fill="#1a110b" stroke="none"/>
+</g></svg>
