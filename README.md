@@ -64,7 +64,7 @@ ktech art/build/chokeobon.png images/inventoryimages/chokeobon.tex
 ktech art/build/modicon.png modicon.tex
 ```
 
-The world model (`anim/chokeobon.zip`) is a static one-frame animation generated from the same artwork by `tools/build_anim.py` (needs `ktech` and ImageMagick). The source drawing is `art/source/chokeobon.svg`. To resize the item on the ground, change `WORLD_HEIGHT` in the script and rebuild.
+The world model (`anim/chokeobon.zip`) is a static one-frame animation generated from the same artwork by `tools/build_anim.py` (needs `ktech` and ImageMagick). The source drawing is `art/source/chokeobon.svg`. To resize the item on the ground, change `WORLD_SCALE` in `scripts/prefabs/chokeobon.lua`.
 
 ## Status
 
