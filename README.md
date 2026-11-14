@@ -48,7 +48,11 @@ tools/build_anim.py            Generates the world model
 
 ## Packaging
 
-`tools/package.sh` builds `dist/choke-o-bons/` (only the files the game needs) and `dist/preview.png` (Workshop preview image). Upload the `dist/choke-o-bons` folder, not the whole repository.
+`tools/package.sh` builds `dist/choke-o-bons/` (only the files the game needs) and copies the Workshop preview image to `dist/preview.png`. Upload the `dist/choke-o-bons` folder, not the whole repository.
+
+A GitHub Actions workflow (`.github/workflows/package.yml`) does this on every push to `main`: it syntax-checks the Lua (5.1, as DST uses) and publishes the `choke-o-bons` and `workshop-preview` artifacts, downloadable from the run's page in the Actions tab. Pushing a tag like `v0.1.0` also creates a GitHub Release with `choke-o-bons.zip` and the preview attached.
+
+`tools/render_preview.sh` regenerates `art/preview.png` from the source drawing (macOS and ImageMagick 6 only; run it when the art changes).
 
 ## Art
 

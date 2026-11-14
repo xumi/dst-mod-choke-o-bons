@@ -1,0 +1,55 @@
+name: Package mod
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # DST runs Lua 5.1
+      - name: Check Lua syntax
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq lua5.1
+          for f in modinfo.lua modmain.lua scripts/prefabs/*.lua; do
+            luac5.1 -p "$f"
+          done
+
+      - name: Build dist
+        run: tools/package.sh
+
+      - name: Upload mod folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: choke-o-bons
+          path: dist/choke-o-bons
+          if-no-files-found: error
+
+      - name: Upload Workshop preview image
+        uses: actions/upload-artifact@v4
+        with:
+          name: workshop-preview
+          path: dist/preview.png
+          if-no-files-found: error
+
+      - name: Zip release
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: cd dist && zip -r ../choke-o-bons.zip choke-o-bons
+
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            choke-o-bons.zip
+            dist/preview.png
