@@ -14,6 +14,7 @@ end)
 
 function Scatter:Run()
     if self.done then
+        print("[chokeobon] scatter already done for this world, skipping")
         return
     end
     self.done = true
@@ -32,6 +33,9 @@ function Scatter:Run()
             placed = placed + 1
         end
     end
+
+    -- Shows up in server_log.txt, to check what happened when the world loaded
+    print(string.format("[chokeobon] scattered %d of %d (map %dx%d tiles, %d tries)", placed, wanted, width, height, tries))
 end
 
 function Scatter:OnSave()
