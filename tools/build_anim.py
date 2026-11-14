@@ -95,7 +95,7 @@ def main():
             f.write(data)
 
     zpath = os.path.join(out_dir, NAME + ".zip")
-    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_DEFLATED) as z:
+    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_STORED) as z:
         for name in ("anim.bin", "build.bin", "atlas-0.tex"):
             z.write(os.path.join(tmp, name), name)
     print("wrote", zpath)
