@@ -37,7 +37,8 @@ Copy the `choke-o-bons` folder (from `tools/package.sh` or a release zip) into t
 
 ```
 modinfo.lua                    Mod metadata and config options
-modmain.lua                    Worldgen placement, loot drops, Pig King hook
+modmain.lua                    Loot drops, Pig King hook
+modworldgenmain.lua            Map placement at world generation
 scripts/prefabs/chokeobon.lua  The item: uses, stats, emotes
 images/inventoryimages/        Inventory icon (.tex + atlas .xml)
 modicon.tex / modicon.xml      Mod icon shown in the Mods screen

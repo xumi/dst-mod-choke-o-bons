@@ -8,21 +8,12 @@ Assets =
 
 RegisterInventoryItemAtlas("images/inventoryimages/chokeobon.xml", "chokeobon.tex")
 
-local DENSITY = GetModConfigData("world_density")
 local DROP_CHANCE = GetModConfigData("drop_chance")
 local PIGKING_CHANCE = GetModConfigData("pigking_chance")
 
 STRINGS.NAMES.CHOKEOBON = "Choke-o-Bon"
 
 STRINGS.CHARACTERS.GENERIC.DESCRIBE.CHOKEOBON = "A rare little treat. Don't mind if I do."
-
--- Worldgen: sprinkle a few across common background rooms.
-for _, room in ipairs({ "BGGrass", "BGForest", "BGDeciduous", "BGSavanna", "BGRocky", "BGMarsh" }) do
-    AddRoomPreInit(room, function(r)
-        r.contents.distributeprefabs = r.contents.distributeprefabs or {}
-        r.contents.distributeprefabs.chokeobon = DENSITY
-    end)
-end
 
 -- Runtime: a tiny chance on any loot drop (mobs, mined rocks, chopped trees...).
 AddComponentPostInit("lootdropper", function(self)
