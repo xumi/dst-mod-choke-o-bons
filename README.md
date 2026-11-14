@@ -5,7 +5,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
 ## The item
 
 - Each Choke-o-Bon has a random number of uses between 1 and 8. The number is rolled the first time the item is picked up, saved with the item, and never shown to the player.
-- Eat it like any food. Each use gives:
+- Eat it like any food. The bag stays in your inventory and each bite gives:
   - -1 health
   - +1 hunger
   - +20 sanity

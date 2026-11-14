@@ -61,20 +61,25 @@ local function EmoteVerySad(doer)
     end)
 end
 
--- Called after the stats were applied. The game removes the eaten item afterwards,
--- so a bag that still has treats left is replaced by a copy with one fewer use.
+-- Called after the stats were applied. The game removes eaten food afterwards, so for
+-- a bag that still has treats left we block that Remove for this one tick and keep the
+-- same item, just with one fewer use.
 local function OnEaten(inst, eater)
     RollUses(inst)
 
     if inst.uses > 0 then
-        local copy = SpawnPrefab(inst.prefab)
-        copy.uses = inst.uses - 1
-        copy:RefreshEdible()
-        if eater.components.inventory ~= nil then
-            eater.components.inventory:GiveItem(copy, nil, eater:GetPosition())
-        else
-            copy.Transform:SetPosition(eater.Transform:GetWorldPosition())
-        end
+        inst.uses = inst.uses - 1
+        RefreshEdible(inst)
+
+        inst.Remove = function() end
+        inst:DoTaskInTime(0, function()
+            inst.Remove = nil
+            -- If the game already took the bag out of the inventory, put it back
+            if inst:IsValid() and eater:IsValid() and eater.components.inventory ~= nil
+                and inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner ~= eater then
+                eater.components.inventory:GiveItem(inst, nil, eater:GetPosition())
+            end
+        end)
         EmoteHappy(eater)
     else
         -- An empty bag bites back and is spent for good
