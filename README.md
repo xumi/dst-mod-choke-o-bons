@@ -5,12 +5,12 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
 ## The item
 
 - Each Choke-o-Bon has a random number of uses between 1 and 8. The number is rolled the first time the item is picked up, saved with the item, and never shown to the player.
-- Use it from the inventory (right-click, "Use"). Each use gives:
+- Eat it like any food. Each use gives:
   - -1 health
   - +1 hunger
   - +20 sanity
   - a happy emote
-- Using an empty Choke-o-Bon costs 100 sanity, plays a very sad emote with the character's voice, and destroys the bag with a break sound.
+- Eating an empty Choke-o-Bon costs 100 sanity, plays a very sad emote with the character's voice, and destroys the bag with a break sound.
 - The health loss can kill the player.
 
 ## Where to find it

@@ -14,15 +14,25 @@ local HUNGER = 1
 local SANITY = 20
 local EMPTY_SANITY_PENALTY = -100
 
+-- Eating a full bag gives the stats below; an empty bag gives nothing (and costs sanity).
+local function RefreshEdible(inst)
+    local empty = inst.uses ~= nil and inst.uses <= 0
+    local edible = inst.components.edible
+    edible.healthvalue = empty and 0 or HEALTH
+    edible.hungervalue = empty and 0 or HUNGER
+    edible.sanityvalue = empty and 0 or SANITY
+end
+
 -- The number of uses is rolled once, the first time the item is picked up,
 -- and is never shown to the player.
 local function RollUses(inst)
     if inst.uses == nil then
         inst.uses = math.random(MIN_USES, MAX_USES)
+        RefreshEdible(inst)
     end
 end
 
--- The emote is pushed on the next tick so it isn't swallowed by the use action's own state.
+-- The emote is pushed on the next tick so it isn't swallowed by the eating state.
 local function Emote(doer, data)
     doer:DoTaskInTime(0.2, function()
         if doer:IsValid() and doer.sg ~= nil and not doer.sg:HasStateTag("busy") then
@@ -45,34 +55,31 @@ local function EmoteVerySad(doer)
     end)
 end
 
-local function OnUse(inst)
-    local doer = inst.components.inventoryitem.owner
-    -- Let the item be used again next time
-    inst.components.useableitem.inuse = false
-
-    if doer == nil or not doer:HasTag("player") then
-        return false
-    end
-
+-- Called after the stats were applied. The game removes the eaten item afterwards,
+-- so a bag that still has treats left is replaced by a copy with one fewer use.
+local function OnEaten(inst, eater)
     RollUses(inst)
 
     if inst.uses > 0 then
-        inst.uses = inst.uses - 1
-        if doer.components.health ~= nil then doer.components.health:DoDelta(HEALTH, nil, inst.prefab) end
-        if doer.components.hunger ~= nil then doer.components.hunger:DoDelta(HUNGER) end
-        if doer.components.sanity ~= nil then doer.components.sanity:DoDelta(SANITY) end
-        EmoteHappy(doer)
-    else
-        if doer.components.sanity ~= nil then doer.components.sanity:DoDelta(EMPTY_SANITY_PENALTY) end
-        EmoteVerySad(doer)
-        -- The empty bag is spent for good once it has bitten back
-        if doer.SoundEmitter ~= nil then
-            doer.SoundEmitter:PlaySound("dontstarve/wilson/use_break")
+        local copy = SpawnPrefab(inst.prefab)
+        copy.uses = inst.uses - 1
+        copy:RefreshEdible()
+        if eater.components.inventory ~= nil then
+            eater.components.inventory:GiveItem(copy, nil, eater:GetPosition())
+        else
+            copy.Transform:SetPosition(eater.Transform:GetWorldPosition())
         end
-        inst:Remove()
+        EmoteHappy(eater)
+    else
+        -- An empty bag bites back and is spent for good
+        if eater.components.sanity ~= nil then
+            eater.components.sanity:DoDelta(EMPTY_SANITY_PENALTY)
+        end
+        if eater.SoundEmitter ~= nil then
+            eater.SoundEmitter:PlaySound("dontstarve/wilson/use_break")
+        end
+        EmoteVerySad(eater)
     end
-
-    return true
 end
 
 local function OnSave(inst, data)
@@ -82,6 +89,7 @@ end
 local function OnLoad(inst, data)
     if data ~= nil then
         inst.uses = data.uses
+        RefreshEdible(inst)
     end
 end
 
@@ -112,8 +120,11 @@ local function fn()
     inst:AddComponent("inventoryitem")
     inst.components.inventoryitem.atlasname = "images/inventoryimages/chokeobon.xml"
 
-    inst:AddComponent("useableitem")
-    inst.components.useableitem:SetOnUseFn(OnUse)
+    inst:AddComponent("edible")
+    inst.components.edible.foodtype = FOODTYPE.GOODIES
+    inst.components.edible.oneaten = OnEaten
+    inst.RefreshEdible = RefreshEdible
+    RefreshEdible(inst)
 
     inst:AddComponent("tradable")
 
