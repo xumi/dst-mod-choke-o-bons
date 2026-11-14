@@ -5,8 +5,8 @@ and brands out of the title, description and tags.
 
 ## Preview image
 
-Use `art/preview.jpg` (or `art/preview.png`): square, 512x512, **no alpha channel**. The Mod Uploader
-rejected the first version, an RGBA PNG, as "invalid". The uploader looks for `preview.jpg` by default
+Use `art/preview.png`: square, 512x512, 8-bit RGB, **no alpha channel** (confirmed accepted by the Mod
+Uploader). `art/preview.jpg` is the same image as a fallback. The first version, an RGBA PNG, was rejected as "invalid". The uploader looks for `preview.jpg` by default
 and has a Browse button. If it still complains, its log is in
 `C:\Users\<you>\AppData\Local\Don't Starve Mod Uploader`.
 
