@@ -63,21 +63,24 @@ local function Emote(doer, data)
     end)
 end
 
--- The character's own voice event, e.g. "dontstarve/characters/wilson/emote"
+-- Same path scheme the game uses for character voices (SGwilson.lua), e.g.
+-- "dontstarve/characters/wilson/hurt"
 local function VoicePath(doer, event)
     return (doer.talker_path_override or "dontstarve/characters/")..(doer.soundsname or doer.prefab).."/"..event
 end
 
--- Note: the emote's `sound` field must be a sound path (a string), never a boolean.
+-- These mirror the game's own "cheer" and "sad" emotes (emotes.lua). The emote state plays the
+-- character's emote voice by itself (and keeps mimes silent) when no `sound` is given.
+-- If a `sound` is given it must be a sound path string; `true` crashes the server.
 local function EmoteHappy(doer)
-    Emote(doer, { anim = "emoteXL_happycheer", sound = VoicePath(doer, "emote") })
+    Emote(doer, { anim = "emoteXL_happycheer" })
 end
 
--- Sad animation plus the character's pained voice
+-- The game's sad emote (with tears) plus the character's pained voice
 local function EmoteVerySad(doer)
-    Emote(doer, { anim = "emoteXL_sad" })
+    Emote(doer, { anim = "emoteXL_sad", fx = "tears", fxdelay = 17 * FRAMES })
     doer:DoTaskInTime(0.2, function()
-        if doer:IsValid() and doer.SoundEmitter ~= nil then
+        if doer:IsValid() and doer.SoundEmitter ~= nil and not doer:HasTag("mime") then
             doer.SoundEmitter:PlaySound(VoicePath(doer, "hurt"))
         end
     end)

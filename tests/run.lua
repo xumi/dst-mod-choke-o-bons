@@ -62,6 +62,7 @@ local function new_game(opts)
 
     G.TILE_SCALE = 4
     G.DEGREES = math.pi / 180
+    G.FRAMES = 1 / 30
     G.FOODTYPE = { GOODIES = "GOODIES", MEAT = "MEAT" }
     G.TUNING = {}           -- the game replaces this table on world load, so it starts empty
     G.STRINGS = { NAMES = {}, CHARACTERS = { GENERIC = { DESCRIBE = {} } } }
@@ -554,6 +555,24 @@ test("eating an empty bag: -100 sanity, a spoken line, a sad emote, a break soun
     local broke = false
     for _, s in ipairs(eater.SoundEmitter.played) do if s:find("use_break") then broke = true end end
     check(broke, "no break sound")
+end)
+
+test("the sad emote uses the game's tears effect, and mimes stay silent", function()
+    local game = setup()
+    local item, eater = new_item(game), new_eater(game, "wes")
+    eater.tags.mime = true
+    item.uses = 0
+    game.pushed = {}
+    eat(item, eater)
+    game.run_tasks()
+    local sad
+    for _, p in ipairs(game.pushed) do if p.name == "emote" then sad = p.data end end
+    check(sad ~= nil, "no emote")
+    eq(sad.anim, "emoteXL_sad", "anim")
+    eq(sad.fx, "tears", "fx")
+    for _, snd in ipairs(eater.SoundEmitter.played) do
+        check(not snd:find("/hurt"), "a mime must not make a pained sound")
+    end
 end)
 
 test("unknown (modded) characters get the default line", function()
