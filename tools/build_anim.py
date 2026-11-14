@@ -11,7 +11,7 @@ import os, struct, subprocess, sys, zipfile, tempfile
 NAME = "chokeobon"
 ATLAS = 256
 WORLD_HEIGHT = 80.0   # height of the sprite in world units; tweak to resize
-HITBOX_PAD = 1.7      # the clickable box is the sprite size times this, so the item is easy to click
+HITBOX_PAD = 1.2      # the clickable box is the sprite size times this
 
 
 def strhash(s):
@@ -42,7 +42,9 @@ def build_bin(w, h, u0, v0, u1, v1):
     out += struct.pack("<I", 1) + lstr("atlas-0.tex")
     out += struct.pack("<I", sym)
     out += struct.pack("<I", 1)                   # symbol frame count
-    out += struct.pack("<IIffffII", 0, 1, 0.0, 0.0, w, h, 0, 6)
+    # Frame bbox is measured from the sprite's centre, so it must be centred too
+    bw, bh = w * HITBOX_PAD, h * HITBOX_PAD
+    out += struct.pack("<IIffffII", 0, 1, -bw / 2.0, -bh / 2.0, bw, bh, 0, 6)
     out += struct.pack("<I", 6)                   # total vertices
     for v in verts:
         out += struct.pack("<6f", *v)
