@@ -16,14 +16,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # DST runs Lua 5.1
-      - name: Check Lua syntax
+      # DST runs Lua 5.1, so the tests run on it too
+      - name: Test
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq lua5.1
-          for f in modinfo.lua modmain.lua scripts/prefabs/*.lua; do
-            luac5.1 -p "$f"
-          done
+          LUA=lua5.1 LUAC=luac5.1 tools/test.sh
 
       - name: Build dist
         run: tools/package.sh

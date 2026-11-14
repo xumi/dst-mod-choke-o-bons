@@ -47,6 +47,16 @@ art/                           Source drawing and PNG sources for the icons
 tools/build_anim.py            Generates the world model
 ```
 
+## Testing
+
+`tools/test.sh` runs every check, and CI runs it on every push and pull request before anything is packaged:
+
+- **Behaviour tests** (`tests/run.lua`): load `modmain.lua` in a strict copy of the game's mod environment (so using `STRINGS`, `TheWorld` or `TUNING` directly is an error, as in the game), then exercise every hook and the item against stub engine objects: map scatter, mob drops, Pig King bonus, eating, emotes, speech.
+- **Model test** (`tests/test_anim.py`): pins the exact contents of `anim/chokeobon.zip` to the values confirmed in game.
+- **Mutation check** (`tests/mutation_check.py`): puts bugs this mod really had back into a temporary copy and makes sure the tests catch each one. Add a case whenever you fix a new bug.
+
+These tests use stubs, not the game, so they catch wiring mistakes and regressions but not wrong assumptions about the engine. Check those against the game's scripts and in the game.
+
 ## Packaging
 
 `tools/package.sh` builds `dist/choke-o-bons/` (only the files the game needs) and copies the Workshop preview image to `dist/preview.png`. Upload the `dist/choke-o-bons` folder, not the whole repository.

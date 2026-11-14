@@ -45,7 +45,8 @@ end
 -- him a trinket. This mirrors prefabs/pigking.lua: the gold comes out 2/3 s after the
 -- trade, from 4.5 units up, launched toward the player.
 AddPrefabPostInit("pigking", function(inst)
-    if not inst.ismastersim or PIGKING_CHANCE <= 0 then
+    -- ismastersim is a field of the world, not of every entity
+    if not GLOBAL.TheWorld.ismastersim or PIGKING_CHANCE <= 0 then
         return
     end
 
