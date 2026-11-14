@@ -31,7 +31,7 @@ For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops o
 
 ## Install
 
-Copy this folder into your DST mods directory and enable it from the Mods screen. On macOS that is usually `~/Documents/Klei/DoNotStarveTogether/mods/`. Create a new world to get the map placement.
+Copy the `choke-o-bons` folder (from `tools/package.sh` or a release zip) into the `mods` folder of the game's install directory, with `modinfo.lua` directly inside it, and enable it from the Mods screen. On Windows with Steam that is `C:\Program Files (x86)\Steam\steamapps\common\Don't Starve Together\mods\`. Create a new world to get the map placement.
 
 ## Layout
 
