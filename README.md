@@ -46,6 +46,10 @@ art/                           Source drawing and PNG sources for the icons
 tools/build_anim.py            Generates the world model
 ```
 
+## Packaging
+
+`tools/package.sh` builds `dist/choke-o-bons/` (only the files the game needs) and `dist/preview.png` (Workshop preview image). Upload the `dist/choke-o-bons` folder, not the whole repository.
+
 ## Art
 
 The icons are converted from PNG to Klei's TEX format with [`ktech`](https://github.com/nsimplex/ktools):

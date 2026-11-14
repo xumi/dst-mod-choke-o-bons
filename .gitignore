@@ -9,3 +9,6 @@
 # Logs and scratch files
 *.log
 tmp/
+
+# Build output
+dist/
