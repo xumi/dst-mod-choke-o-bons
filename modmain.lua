@@ -55,24 +55,24 @@ AddPrefabPostInit("pigking", function(inst)
         return
     end
 
-    -- The king may not have a loot dropper; we only use it to fling the item out like his gold
-    if inst.components.lootdropper == nil then
-        inst:AddComponent("lootdropper")
-    end
-
     local old_onaccept = trader.onaccept
     trader.onaccept = function(king, giver, item, ...)
         if old_onaccept ~= nil then
             old_onaccept(king, giver, item, ...)
         end
         if math.random() < PIGKING_CHANCE then
+            -- Toss it out toward the player, like his gold
             local loot = GLOBAL.SpawnPrefab("chokeobon")
-            local x, y, z = king.Transform:GetWorldPosition()
-            loot.Transform:SetPosition(x, y, z)
-            if king.components.lootdropper.FlingItem ~= nil then
-                king.components.lootdropper:FlingItem(loot)
-            else
-                loot.Transform:SetPosition(x + 2.5, 0, z)
+            local kx, _, kz = king.Transform:GetWorldPosition()
+            local angle = math.random() * 2 * math.pi
+            if giver ~= nil and giver:IsValid() then
+                local gx, _, gz = giver.Transform:GetWorldPosition()
+                angle = math.atan2(kz - gz, gx - kx) + (math.random() - 0.5) * 0.6
+            end
+            local speed = 3 + math.random() * 2
+            loot.Transform:SetPosition(kx, 3, kz)
+            if loot.Physics ~= nil then
+                loot.Physics:SetVel(math.cos(angle) * speed, 6, -math.sin(angle) * speed)
             end
         end
     end
