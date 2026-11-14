@@ -1,12 +1,9 @@
 -- Scatters a fixed number of Choke-o-Bons across the surface world, once,
 -- the first time the world loads with the mod enabled.
-local function ScatterAmount()
-    return TUNING.CHOKEOBON_MAP_AMOUNT or 0
-end
-
 local Scatter = Class(function(self, inst)
     self.inst = inst
     self.done = false
+    self.amount = 0 -- set by modmain right after the component is added
 
     -- Wait a tick so OnLoad has had the chance to restore `done`
     inst:DoTaskInTime(0, function() self:Run() end)
@@ -21,7 +18,7 @@ function Scatter:Run()
 
     local map = TheWorld.Map
     local width, height = map:GetSize()
-    local wanted = ScatterAmount()
+    local wanted = self.amount
     local placed, tries = 0, 0
 
     while placed < wanted and tries < wanted * 500 do

@@ -83,28 +83,18 @@ local function EmoteVerySad(doer)
     end)
 end
 
--- Called after the stats were applied. The game removes eaten food afterwards, so for
--- a bag that still has treats left we block that Remove for this one tick and keep the
--- same item, just with one fewer use.
+-- Called after the stats were applied (Edible:OnEaten). Whether the bag is then removed is
+-- decided by edible.handleremovefn below, so a bag with treats left stays the same item.
 local function OnEaten(inst, eater)
     RollUses(inst)
 
     if inst.uses > 0 then
         inst.uses = inst.uses - 1
         RefreshEdible(inst)
-
-        inst.Remove = function() end
-        inst:DoTaskInTime(0, function()
-            inst.Remove = nil
-            -- If the game already took the bag out of the inventory, put it back
-            if inst:IsValid() and eater:IsValid() and eater.components.inventory ~= nil
-                and inst.components.inventoryitem ~= nil and inst.components.inventoryitem.owner ~= eater then
-                eater.components.inventory:GiveItem(inst, nil, eater:GetPosition())
-            end
-        end)
         EmoteHappy(eater)
     else
         -- An empty bag bites back and is spent for good
+        inst._spent = true
         if eater.components.sanity ~= nil then
             eater.components.sanity:DoDelta(EMPTY_SANITY_PENALTY)
         end
@@ -117,6 +107,13 @@ local function OnEaten(inst, eater)
                 eater.components.talker:Say(EMPTY_LINES[eater.prefab] or DEFAULT_EMPTY_LINE)
             end
         end)
+    end
+end
+
+-- Eater calls this instead of removing the food (see Edible:HandleEatRemove)
+local function HandleEatRemove(inst)
+    if inst._spent then
+        inst:Remove()
     end
 end
 
@@ -160,7 +157,7 @@ local function fn()
     inst:AddComponent("edible")
     inst.components.edible.foodtype = FOODTYPE.GOODIES
     inst.components.edible.oneaten = OnEaten
-    inst.RefreshEdible = RefreshEdible
+    inst.components.edible.handleremovefn = HandleEatRemove
     RefreshEdible(inst)
 
     inst:AddComponent("tradable")
