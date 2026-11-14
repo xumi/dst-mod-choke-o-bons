@@ -3,9 +3,6 @@ local assets =
     Asset("ANIM", "anim/chokeobon.zip"),
 }
 
--- Size of the model on the ground (1 = as built). Raise it to make the item bigger.
-local WORLD_SCALE = 1.87
-
 local MIN_USES = 1
 local MAX_USES = 8
 
@@ -146,7 +143,6 @@ local function fn()
     inst.AnimState:SetBank("chokeobon")
     inst.AnimState:SetBuild("chokeobon")
     inst.AnimState:PlayAnimation("idle")
-    inst.AnimState:SetScale(WORLD_SCALE, WORLD_SCALE)
 
     inst:AddTag("cattoy")
 

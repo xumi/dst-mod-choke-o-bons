@@ -10,7 +10,7 @@ import os, struct, subprocess, sys, zipfile, tempfile
 
 NAME = "chokeobon"
 ATLAS = 256
-WORLD_HEIGHT = 80.0   # height of the sprite in world units; tweak to resize
+WORLD_HEIGHT = 150.0  # height of the sprite in world units; tweak to resize and rebuild
 HITBOX_PAD = 1.2      # the clickable box is the sprite size times this
 
 
