@@ -43,7 +43,8 @@ AddComponentPostInit("lootdropper", function(self)
     end
 end)
 
--- The Pig King very rarely tosses one out as a bonus when traded with.
+-- The Pig King very rarely tosses a Choke-o-Bon out along with his usual reward
+-- (gold or candy) when you trade him a trinket.
 AddPrefabPostInit("pigking", function(inst)
     if not GLOBAL.TheWorld.ismastersim or PIGKING_CHANCE <= 0 then
         return
@@ -54,31 +55,25 @@ AddPrefabPostInit("pigking", function(inst)
         return
     end
 
+    -- The king may not have a loot dropper; we only use it to fling the item out like his gold
+    if inst.components.lootdropper == nil then
+        inst:AddComponent("lootdropper")
+    end
+
     local old_onaccept = trader.onaccept
     trader.onaccept = function(king, giver, item, ...)
         if old_onaccept ~= nil then
             old_onaccept(king, giver, item, ...)
         end
         if math.random() < PIGKING_CHANCE then
-            -- The Pig King has no loot dropper, so place the bag ourselves, a little toward the giver
             local loot = GLOBAL.SpawnPrefab("chokeobon")
-            local kx, ky, kz = king.Transform:GetWorldPosition()
-            local dx, dz = 0, 2.5
-            if giver ~= nil and giver:IsValid() then
-                local gx, _, gz = giver.Transform:GetWorldPosition()
-                local len = math.sqrt((gx - kx) ^ 2 + (gz - kz) ^ 2)
-                if len > 0 then
-                    dx, dz = (gx - kx) / len * 2.5, (gz - kz) / len * 2.5
-                end
+            local x, y, z = king.Transform:GetWorldPosition()
+            loot.Transform:SetPosition(x, y, z)
+            if king.components.lootdropper.FlingItem ~= nil then
+                king.components.lootdropper:FlingItem(loot)
+            else
+                loot.Transform:SetPosition(x + 2.5, 0, z)
             end
-            loot.Transform:SetPosition(kx + dx, 0, kz + dz)
         end
-    end
-end)
-
--- A fixed, small number are scattered over the surface world when it first loads.
-AddPrefabPostInit("forest", function(inst)
-    if GLOBAL.TheWorld.ismastersim then
-        inst:AddComponent("chokeobonscatter")
     end
 end)
