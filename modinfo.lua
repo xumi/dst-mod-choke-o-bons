@@ -14,6 +14,24 @@ server_filter_tags = {}
 configuration_options =
 {
     {
+        name = "",
+        label = "Build @BUILD@",
+        options = {{description = "", data = 0}},
+        default = 0,
+    },
+    {
+        name = "model_variant",
+        label = "Model variant (debug)",
+        hover = "Click-box experiment. 1 is the normal model; 2 and 3 are test variants",
+        options =
+        {
+            {description = "1 (normal)", data = 1},
+            {description = "2 (test)", data = 2},
+            {description = "3 (test)", data = 3},
+        },
+        default = 1,
+    },
+    {
         name = "map_amount",
         label = "Items on the map",
         hover = "How many Choke-o-Bons are scattered across the surface world when it first loads",

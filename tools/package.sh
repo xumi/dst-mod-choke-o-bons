@@ -9,6 +9,12 @@ rm -rf dist
 mkdir -p "$OUT"
 cp -R modinfo.lua modmain.lua modicon.tex modicon.xml scripts images anim "$OUT"/
 cp art/preview.png dist/preview.png
+
+# Stamp the build (short commit id, "+" if there are uncommitted changes) into the settings screen
+BUILD=$(git rev-parse --short HEAD 2>/dev/null || echo unknown)
+[ -n "$(git status --porcelain 2>/dev/null)" ] && BUILD="$BUILD+"
+sed -i.bak "s/@BUILD@/$BUILD/" "$OUT/modinfo.lua" && rm -f "$OUT/modinfo.lua.bak"
+echo "Build:      $BUILD"
 find dist -name .DS_Store -delete
 echo "Mod folder: $OUT"
 echo "Preview:    dist/preview.png"

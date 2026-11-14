@@ -1,6 +1,9 @@
 local assets =
 {
     Asset("ANIM", "anim/chokeobon.zip"),
+    -- Click-box experiments (see the "Model variant" setting)
+    Asset("ANIM", "anim/chokeobon_v2.zip"),
+    Asset("ANIM", "anim/chokeobon_v3.zip"),
 }
 
 local MIN_USES = 1
@@ -140,8 +143,10 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("chokeobon")
-    inst.AnimState:SetBuild("chokeobon")
+    local variant = TUNING.CHOKEOBON_MODEL or 1
+    local model = variant == 1 and "chokeobon" or ("chokeobon_v"..variant)
+    inst.AnimState:SetBank(model)
+    inst.AnimState:SetBuild(model)
     inst.AnimState:PlayAnimation("idle")
 
     inst:AddTag("cattoy")

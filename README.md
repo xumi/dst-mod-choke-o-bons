@@ -55,6 +55,10 @@ A GitHub Actions workflow (`.github/workflows/package.yml`) does this on every p
 
 `tools/render_preview.sh` regenerates `art/preview.png` from the source drawing (macOS and ImageMagick 6 only; run it when the art changes).
 
+## Debugging
+
+The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed. A temporary "Model variant (debug)" setting switches between three ground models that differ only in their click boxes; it will be removed once the click box is sorted out.
+
 ## Art
 
 The icons are converted from PNG to Klei's TEX format with [`ktech`](https://github.com/nsimplex/ktools):

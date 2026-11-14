@@ -13,6 +13,7 @@ RegisterInventoryItemAtlas("images/inventoryimages/chokeobon.xml", "chokeobon.te
 
 local DROP_CHANCE = GetModConfigData("drop_chance")
 GLOBAL.TUNING.CHOKEOBON_MAP_AMOUNT = GetModConfigData("map_amount")
+GLOBAL.TUNING.CHOKEOBON_MODEL = GetModConfigData("model_variant")
 local PIGKING_CHANCE = GetModConfigData("pigking_chance")
 
 STRINGS.NAMES.CHOKEOBON = "Choke-o-Bon"
