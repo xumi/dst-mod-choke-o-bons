@@ -143,7 +143,7 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    local variant = TUNING.CHOKEOBON_MODEL or 2
+    local variant = TUNING.CHOKEOBON_MODEL or 1
     local model = variant == 1 and "chokeobon" or ("chokeobon_v"..variant)
     inst.AnimState:SetBank(model)
     inst.AnimState:SetBuild(model)

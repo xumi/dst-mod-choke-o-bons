@@ -22,14 +22,14 @@ configuration_options =
     {
         name = "model_variant",
         label = "Model variant (debug)",
-        hover = "Click-box experiment: 1 = bigger anim box, 2 = bigger build box, 3 = both bigger",
+        hover = "Click-box experiment: 1 = as Klei's compiler writes it, 2 = same with the bottom edge fixed, 3 = like 1 but larger",
         options =
         {
-            {description = "1 (anim box)", data = 1},
-            {description = "2 (build box)", data = 2},
-            {description = "3 (both)", data = 3},
+            {description = "1 (official)", data = 1},
+            {description = "2 (bottom fixed)", data = 2},
+            {description = "3 (larger)", data = 3},
         },
-        default = 2,
+        default = 1,
     },
     {
         name = "map_amount",

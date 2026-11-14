@@ -3,22 +3,45 @@
 
 Usage: build_anim.py <sprite.png> <out_dir> [variant]
 
-Click box experiments. The animation file and the build file each hold a box, and it is
-not known which one the game uses for picking, so each variant sets their size separately
-(as a factor of the sprite size). Variant 1 is the real model name ("chokeobon"); the
-others are "chokeobon_v2" and "chokeobon_v3".
+The boxes follow Klei's own compiler (ds_mod_tools: src/app/scml/main.cpp and
+buildanimation.py):
+  * build file: one box per symbol frame, (x, y, w, h) with x, y the CENTRE of the image
+    and w, h whole numbers;
+  * anim file: per frame, the union of the build boxes moved by each element's matrix,
+    then enlarged by 1.2 about its centre. The compiler treats (x, y) as a corner and
+    computes the bottom edge from the left edge; that quirk is reproduced on purpose,
+    since vanilla items are built with it.
+
+Variants (the real model is variant 1, named "chokeobon"; the others are "chokeobon_v2"
+and "chokeobon_v3"):
+  1: exactly what Klei's compiler writes
+  2: same, but with the bottom edge computed from the top edge
+  3: same as 1, with the anim box a further 1.6x larger
 
 Needs `ktech` on the PATH. The sprite is trimmed, fitted into a 256x256 atlas
 and shown as a single "idle" frame in the "chokeobon" bank/build.
 """
-import os, struct, subprocess, sys, zipfile, tempfile
+import math, os, struct, subprocess, sys, zipfile, tempfile
 
 NAME = "chokeobon"
 VARIANT = 1
 ATLAS = 256
 WORLD_HEIGHT = 150.0  # height of the sprite in world units; tweak to resize and rebuild
-# variant: (anim file box factor, build file box factor)
-HITBOX_PADS = {1: (1.6, 1.2), 2: (1.2, 1.6), 3: (1.6, 1.6)}
+
+
+def anim_box(w, h, ty):
+    """Frame box as Klei's compiler writes it, for one centred image with matrix (1,0,0,1,0,ty)."""
+    x1 = 0.0
+    x2 = x1 + w
+    y1 = ty
+    y2 = (y1 if VARIANT == 2 else x1) + h     # the compiler uses x1 here (variant 1 and 3)
+    bw, bh = int(math.ceil(x2 - x1)), int(math.ceil(y2 - y1))
+    bx, by = x1, y1
+    scale = 1.2 * (1.6 if VARIANT == 3 else 1.0)
+    nw, nh = int(math.ceil(scale * bw)), int(math.ceil(scale * bh))
+    bx += bw / 2.0 - nw / 2.0
+    by += bh / 2.0 - nh / 2.0
+    return bx, by, nw, nh
 
 
 def strhash(s):
@@ -49,10 +72,8 @@ def build_bin(w, h, u0, v0, u1, v1):
     out += struct.pack("<I", 1) + lstr("atlas-0.tex")
     out += struct.pack("<I", sym)
     out += struct.pack("<I", 1)                   # symbol frame count
-    # Frame bbox is measured from the sprite's centre, so it must be centred too
-    pad = HITBOX_PADS[VARIANT][1]
-    bw, bh = w * pad, h * pad
-    out += struct.pack("<IIffffII", 0, 1, -bw / 2.0, -bh / 2.0, bw, bh, 0, 6)
+    # x, y are the image's centre (0, 0); w, h are whole numbers
+    out += struct.pack("<IIffffII", 0, 1, 0.0, 0.0, float(int(round(w))), float(int(round(h))), 0, 6)
     out += struct.pack("<I", 6)                   # total vertices
     for v in verts:
         out += struct.pack("<6f", *v)
@@ -70,11 +91,8 @@ def anim_bin(w, h):
     out += struct.pack("<f", 30.0)
     out += struct.pack("<I", 1)                   # frames
     # frame: bbox, events, elements
-    # The box is centred on the sprite (whose centre is h/2 above the ground)
-    pad = HITBOX_PADS[VARIANT][0]
-    bw, bh = w * pad, h * pad
-    # y points up for this box, so the sprite's centre is h/2 above the ground
-    out += struct.pack("<ffffII", -bw / 2.0, h / 2.0 - bh / 2.0, bw, bh, 0, 1)
+    bx, by, bw, bh = anim_box(int(round(w)), int(round(h)), -h / 2.0)
+    out += struct.pack("<ffffII", bx, by, float(bw), float(bh), 0, 1)
     # element: symbol hash, build frame, layer hash, matrix a b c d tx ty, z
     out += struct.pack("<III", sym, 0, sym)
     out += struct.pack("<6f", 1, 0, 0, 1, 0, -h / 2.0)
