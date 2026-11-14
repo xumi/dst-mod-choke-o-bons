@@ -55,10 +55,6 @@ A GitHub Actions workflow (`.github/workflows/package.yml`) does this on every p
 
 `tools/render_preview.sh` regenerates `art/preview.png` from the source drawing (macOS and ImageMagick 6 only; run it when the art changes).
 
-## Debugging
-
-The settings screen shows the build (short commit id, with a trailing `+` for uncommitted changes) so you can confirm which version is installed.
-
 ## Art
 
 The icons are converted from PNG to Klei's TEX format with [`ktech`](https://github.com/nsimplex/ktools):
@@ -72,4 +68,4 @@ The world model (`anim/chokeobon.zip`) is a static one-frame animation generated
 
 ## Status
 
-Early version, tested in game: the mod loads, world generation works, and eating a Choke-o-Bon (stats, emotes) works. Not yet confirmed: the Pig King bonus, the loot drops, the map scatter count, the break sound, and the colours and size of the world model.
+Version 1.0.0. Confirmed in game: the mod loads, eating works (stats, emotes, the bag staying in your inventory), and the world model and its click box. Not yet confirmed: the Pig King bonus, the pig/merm/bunnyman drops, the map scatter count, and the break sound.
