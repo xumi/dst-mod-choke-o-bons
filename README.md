@@ -68,4 +68,4 @@ The world model (`anim/chokeobon.zip`) is a static one-frame animation generated
 
 ## Status
 
-Early version. The Lua passes a syntax check, but the mod has not been run in the game yet. The emotes, the break sound, the Pig King hook, the world generation placement and the hand-built world model were written without access to the game's files and may need adjustments.
+Early version, tested in game: the mod loads, world generation works, and eating a Choke-o-Bon (stats, emotes, replacement bag) works. Not yet confirmed: the Pig King bonus, the loot drops, the map scatter count, the break sound, and the colours and size of the world model.
