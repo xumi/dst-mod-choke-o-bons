@@ -13,6 +13,7 @@ local HEALTH = -1
 local HUNGER = 1
 local SANITY = 20
 local EMPTY_SANITY_PENALTY = -100
+local EMPTY_LINE = "Empty. I feel so empty too."
 
 -- Eating a full bag gives the stats below; an empty bag gives nothing (and costs sanity).
 local function RefreshEdible(inst)
@@ -90,6 +91,11 @@ local function OnEaten(inst, eater)
             eater.SoundEmitter:PlaySound("dontstarve/wilson/use_break")
         end
         EmoteVerySad(eater)
+        eater:DoTaskInTime(0.4, function()
+            if eater:IsValid() and eater.components.talker ~= nil then
+                eater.components.talker:Say(EMPTY_LINE)
+            end
+        end)
     end
 end
 
