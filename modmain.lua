@@ -59,8 +59,19 @@ AddPrefabPostInit("pigking", function(inst)
         if old_onaccept ~= nil then
             old_onaccept(king, giver, item, ...)
         end
-        if math.random() < PIGKING_CHANCE and king.components.lootdropper ~= nil then
-            king.components.lootdropper:SpawnLootPrefab("chokeobon")
+        if math.random() < PIGKING_CHANCE then
+            -- The Pig King has no loot dropper, so place the bag ourselves, a little toward the giver
+            local loot = GLOBAL.SpawnPrefab("chokeobon")
+            local kx, ky, kz = king.Transform:GetWorldPosition()
+            local dx, dz = 0, 2.5
+            if giver ~= nil and giver:IsValid() then
+                local gx, _, gz = giver.Transform:GetWorldPosition()
+                local len = math.sqrt((gx - kx) ^ 2 + (gz - kz) ^ 2)
+                if len > 0 then
+                    dx, dz = (gx - kx) / len * 2.5, (gz - kz) / len * 2.5
+                end
+            end
+            loot.Transform:SetPosition(kx + dx, 0, kz + dz)
         end
     end
 end)
