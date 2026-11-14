@@ -37,7 +37,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: workshop-preview
-          path: dist/preview.png
+          path: |
+            dist/preview.png
+            dist/preview.jpg
           if-no-files-found: error
 
       - name: Zip release
@@ -51,3 +53,4 @@ jobs:
           files: |
             choke-o-bons.zip
             dist/preview.png
+            dist/preview.jpg

@@ -3,6 +3,13 @@
 Copy the sections below into the Workshop item. Keep any mention of other companies' products
 and brands out of the title, description and tags.
 
+## Preview image
+
+Use `art/preview.jpg` (or `art/preview.png`): square, 512x512, **no alpha channel**. The Mod Uploader
+rejected the first version, an RGBA PNG, as "invalid". The uploader looks for `preview.jpg` by default
+and has a Browse button. If it still complains, its log is in
+`C:\Users\<you>\AppData\Local\Don't Starve Mod Uploader`.
+
 ## Title
 
 Choke-o-Bons
