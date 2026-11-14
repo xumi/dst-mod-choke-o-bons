@@ -41,16 +41,22 @@ local function Emote(doer, data)
     end)
 end
 
-local function EmoteHappy(doer)
-    Emote(doer, { anim = "emoteXL_happycheer", sound = true })
+-- The character's own voice event, e.g. "dontstarve/characters/wilson/emote"
+local function VoicePath(doer, event)
+    return (doer.talker_path_override or "dontstarve/characters/")..(doer.soundsname or doer.prefab).."/"..event
 end
 
--- Sad animation plus the character's own pained voice
+-- Note: the emote's `sound` field must be a sound path (a string), never a boolean.
+local function EmoteHappy(doer)
+    Emote(doer, { anim = "emoteXL_happycheer", sound = VoicePath(doer, "emote") })
+end
+
+-- Sad animation plus the character's pained voice
 local function EmoteVerySad(doer)
-    Emote(doer, { anim = "emoteXL_sad", sound = true })
+    Emote(doer, { anim = "emoteXL_sad" })
     doer:DoTaskInTime(0.2, function()
         if doer:IsValid() and doer.SoundEmitter ~= nil then
-            doer.SoundEmitter:PlaySound((doer.talker_path_override or "dontstarve/characters/")..(doer.soundsname or doer.prefab).."/hurt")
+            doer.SoundEmitter:PlaySound(VoicePath(doer, "hurt"))
         end
     end)
 end
