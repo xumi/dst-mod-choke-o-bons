@@ -43,12 +43,10 @@ configuration_options =
         hover = "Chance that the Pig King hands out a Choke-o-Bon when you trade him an item",
         options =
         {
-            {description = "Off", data = 0},
-            {description = "0.5%", data = 0.005},
             {description = "1%", data = 0.01},
             {description = "3%", data = 0.03},
-            {description = "50% (debug)", data = 0.5},
+            {description = "5%", data = 0.05},
         },
-        default = 0.005,
+        default = 0.01,
     },
 }

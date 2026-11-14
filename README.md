@@ -17,7 +17,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
 
 - On the map: a fixed small number (3 by default) are scattered at random over the surface world the first time it loads with the mod enabled. Existing worlds get them too, once.
 - Kills: a 0.5% chance when you kill a pig (including guards), a merm (including guards) or a bunnyman.
-- The Pig King: a very small chance of a bonus when you trade with him.
+- The Pig King: a small chance (1% by default) of a Choke-o-Bon tossed out along with his usual reward when you trade him a trinket.
 
 For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops one at your feet.
 
@@ -27,7 +27,7 @@ For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops o
 |---|---|---|
 | Items on the map | 3, 6, 12 | 3 |
 | Pig, merm and bunnyman drop chance | 0.1%, 0.5%, 1% | 0.5% |
-| Pig King chance | Off, 0.5%, 1%, 3%, 50% (debug) | 0.5% |
+| Pig King chance | 1%, 3%, 5% | 1% |
 
 ## Install
 
