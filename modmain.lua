@@ -12,6 +12,7 @@ local STRINGS = GLOBAL.STRINGS
 RegisterInventoryItemAtlas("images/inventoryimages/chokeobon.xml", "chokeobon.tex")
 
 local DROP_CHANCE = GetModConfigData("drop_chance")
+GLOBAL.TUNING.CHOKEOBON_MAP_AMOUNT = GetModConfigData("map_amount")
 local PIGKING_CHANCE = GetModConfigData("pigking_chance")
 
 STRINGS.NAMES.CHOKEOBON = "Choke-o-Bon"
@@ -48,5 +49,12 @@ AddPrefabPostInit("pigking", function(inst)
         if math.random() < PIGKING_CHANCE and king.components.lootdropper ~= nil then
             king.components.lootdropper:SpawnLootPrefab("chokeobon")
         end
+    end
+end)
+
+-- A fixed, small number are scattered over the surface world when it first loads.
+AddPrefabPostInit("forest", function(inst)
+    if GLOBAL.TheWorld.ismastersim then
+        inst:AddComponent("chokeobonscatter")
     end
 end)

@@ -14,16 +14,16 @@ server_filter_tags = {}
 configuration_options =
 {
     {
-        name = "world_density",
-        label = "Map density",
-        hover = "How often Choke-o-Bons are placed during world generation",
+        name = "map_amount",
+        label = "Items on the map",
+        hover = "How many Choke-o-Bons are scattered across the surface world when it first loads",
         options =
         {
-            {description = "Very rare", data = 0.0005},
-            {description = "Rare", data = 0.001},
-            {description = "Less rare", data = 0.003},
+            {description = "A few (3)", data = 3},
+            {description = "Some (6)", data = 6},
+            {description = "Many (12)", data = 12},
         },
-        default = 0.001,
+        default = 3,
     },
     {
         name = "drop_chance",

@@ -15,7 +15,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
 
 ## Where to find it
 
-- On the map: sparsely placed in grass, forest, deciduous, savanna, rocky and marsh background rooms at world generation. Existing worlds are not affected.
+- On the map: a fixed small number (3 by default) are scattered at random over the surface world the first time it loads with the mod enabled. Existing worlds get them too, once.
 - Random drops: a small chance on anything that drops loot (mobs, mined rocks, chopped trees, ...).
 - The Pig King: a very small chance of a bonus when you trade with him.
 
@@ -25,7 +25,7 @@ For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops o
 
 | Option | Choices | Default |
 |---|---|---|
-| Map density | 0.05%, 0.1%, 0.3% | 0.1% |
+| Items on the map | 3, 6, 12 | 3 |
 | Random drop chance | 0.1%, 0.5%, 1% | 0.5% |
 | Pig King chance | Off, 0.5%, 1%, 3% | 0.5% |
 
@@ -38,7 +38,7 @@ Copy the `choke-o-bons` folder (from `tools/package.sh` or a release zip) into t
 ```
 modinfo.lua                    Mod metadata and config options
 modmain.lua                    Loot drops, Pig King hook
-modworldgenmain.lua            Map placement at world generation
+scripts/components/            Scatters the map items on first load
 scripts/prefabs/chokeobon.lua  The item: uses, stats, emotes
 images/inventoryimages/        Inventory icon (.tex + atlas .xml)
 modicon.tex / modicon.xml      Mod icon shown in the Mods screen
