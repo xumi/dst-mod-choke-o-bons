@@ -6,11 +6,8 @@ Assets =
     Asset("IMAGE", "images/inventoryimages/chokeobon.tex"),
 }
 
--- The world generator also runs this file, but without the game's strings or
--- components. Everything below is for the running game only.
-if GLOBAL.STRINGS == nil then
-    return
-end
+-- Game globals aren't visible directly in the mod environment; reach them through GLOBAL.
+local STRINGS = GLOBAL.STRINGS
 
 RegisterInventoryItemAtlas("images/inventoryimages/chokeobon.xml", "chokeobon.tex")
 
@@ -34,7 +31,7 @@ end)
 
 -- The Pig King very rarely tosses one out as a bonus when traded with.
 AddPrefabPostInit("pigking", function(inst)
-    if not TheWorld.ismastersim or PIGKING_CHANCE <= 0 then
+    if not GLOBAL.TheWorld.ismastersim or PIGKING_CHANCE <= 0 then
         return
     end
 
