@@ -27,7 +27,7 @@ configuration_options =
     },
     {
         name = "drop_chance",
-        label = "Pig, merm and bunnyman drop chance",
+        label = "Mob drop chance",
         hover = "Chance that a pig, a merm or a bunnyman drops a Choke-o-Bon when killed",
         options =
         {

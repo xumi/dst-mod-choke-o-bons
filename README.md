@@ -26,7 +26,7 @@ For testing, `c_give("chokeobon")` gives one, and `c_spawn("chokeobon")` drops o
 | Option | Choices | Default |
 |---|---|---|
 | Items on the map | 3, 6, 12 | 3 |
-| Pig, merm and bunnyman drop chance | 0.1%, 0.5%, 1% | 0.5% |
+| Mob drop chance | 0.1%, 0.5%, 1% | 0.5% |
 | Pig King chance | 1%, 3%, 5% | 1% |
 
 ## Install
