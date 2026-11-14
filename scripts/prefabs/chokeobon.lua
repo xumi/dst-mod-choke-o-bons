@@ -13,7 +13,31 @@ local HEALTH = -1
 local HUNGER = 1
 local SANITY = 20
 local EMPTY_SANITY_PENALTY = -100
-local EMPTY_LINE = "Empty. I feel so empty too."
+local DEFAULT_EMPTY_LINE = "Empty. I feel so empty too."
+
+-- What each character says on eating an empty bag, keyed by prefab name.
+-- Anyone not listed (such as modded characters) gets DEFAULT_EMPTY_LINE.
+local EMPTY_LINES =
+{
+    wilson = "Empty. A hollow result. I feel the same.",
+    willow = "Nothing left. Not even for me to burn... or to feel.",
+    wolfgang = "Bag is empty. Wolfgang is empty too. Wolfgang is sad.",
+    wendy = "Empty, like everything. At least it understands me.",
+    wx78 = "CONTAINER EMPTY. INTERNAL EMPTINESS ALSO DETECTED.",
+    wickerbottom = "Empty. How very apt. I feel quite hollow myself.",
+    woodie = "Empty as a hollow log, eh. Same goes for my insides.",
+    wes = "...",
+    waxwell = "Empty. How fitting. I know the feeling well.",
+    wathgrithr = "An empty vessel! As hollow as a fallen hero's hall.",
+    webber = "Aww, it's all gone. We feel empty too.",
+    winona = "Nothing left in the bag. Nothing left in me either. Better fix that.",
+    warly = "An empty pantry is a sorry sight. My heart is a bare larder.",
+    walter = "Woby, it's empty. I feel empty too.",
+    wortox = "Hyuyu... empty. Even an imp can feel hollow.",
+    wormwood = "Empty. Wormwood empty too. Sad leaves.",
+    wurt = "Flort... empty. Wurt feel empty too.",
+    wanda = "Empty. Just like all the time I've lost.",
+}
 
 -- Eating a full bag gives the stats below; an empty bag gives nothing (and costs sanity).
 local function RefreshEdible(inst)
@@ -93,7 +117,7 @@ local function OnEaten(inst, eater)
         EmoteVerySad(eater)
         eater:DoTaskInTime(0.4, function()
             if eater:IsValid() and eater.components.talker ~= nil then
-                eater.components.talker:Say(EMPTY_LINE)
+                eater.components.talker:Say(EMPTY_LINES[eater.prefab] or DEFAULT_EMPTY_LINE)
             end
         end)
     end

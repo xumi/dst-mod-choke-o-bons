@@ -10,7 +10,7 @@ A [Don't Starve Together](https://www.klei.com/games/dont-starve-together) mod t
   - +1 hunger
   - +20 sanity
   - a happy emote
-- Eating an empty Choke-o-Bon costs 100 sanity, plays a very sad emote with the character's voice, says "Empty. I feel so empty too.", and destroys the bag with a break sound.
+- Eating an empty Choke-o-Bon costs 100 sanity, plays a very sad emote with the character's voice, says a line specific to the character (a default one for unlisted or modded characters), and destroys the bag with a break sound.
 - The health loss can kill the player.
 
 ## Where to find it
