@@ -6,6 +6,12 @@ Assets =
     Asset("IMAGE", "images/inventoryimages/chokeobon.tex"),
 }
 
+-- The world generator also runs this file, but without the game's strings or
+-- components. Everything below is for the running game only.
+if GLOBAL.STRINGS == nil then
+    return
+end
+
 RegisterInventoryItemAtlas("images/inventoryimages/chokeobon.xml", "chokeobon.tex")
 
 local DROP_CHANCE = GetModConfigData("drop_chance")
