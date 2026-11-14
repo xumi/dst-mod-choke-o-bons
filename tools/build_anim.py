@@ -3,9 +3,10 @@
 
 Usage: build_anim.py <sprite.png> <out_dir> [variant]
 
-variant 1 (default) is the real model. Variants 2 and 3 are click-box experiments:
-  2: anim box assumes y points up
-  3: huge boxes everywhere (diagnostic: shows whether the game uses them)
+The click box seems to be read by the game at a smaller scale than the sprite and with
+the vertical axis pointing up, so the box is the sprite size times a padding factor.
+Variants try different factors (1: 2.0, 2: 2.6, 3: 3.4); variant 1 is the real model
+name ("chokeobon"), the others are "chokeobon_v2" and "chokeobon_v3".
 
 Needs `ktech` on the PATH. The sprite is trimmed, fitted into a 256x256 atlas
 and shown as a single "idle" frame in the "chokeobon" bank/build.
@@ -16,7 +17,7 @@ NAME = "chokeobon"
 VARIANT = 1
 ATLAS = 256
 WORLD_HEIGHT = 150.0  # height of the sprite in world units; tweak to resize and rebuild
-HITBOX_PAD = 1.2      # the clickable box is the sprite size times this
+HITBOX_PADS = {1: 2.0, 2: 2.6, 3: 3.4}   # click box size relative to the sprite, per variant
 
 
 def strhash(s):
@@ -48,9 +49,8 @@ def build_bin(w, h, u0, v0, u1, v1):
     out += struct.pack("<I", sym)
     out += struct.pack("<I", 1)                   # symbol frame count
     # Frame bbox is measured from the sprite's centre, so it must be centred too
-    bw, bh = w * HITBOX_PAD, h * HITBOX_PAD
-    if VARIANT == 3:
-        bw, bh = 800.0, 800.0
+    pad = HITBOX_PADS[VARIANT]
+    bw, bh = w * pad, h * pad
     out += struct.pack("<IIffffII", 0, 1, -bw / 2.0, -bh / 2.0, bw, bh, 0, 6)
     out += struct.pack("<I", 6)                   # total vertices
     for v in verts:
@@ -70,13 +70,10 @@ def anim_bin(w, h):
     out += struct.pack("<I", 1)                   # frames
     # frame: bbox, events, elements
     # The box is centred on the sprite (whose centre is h/2 above the ground)
-    bw, bh = w * HITBOX_PAD, h * HITBOX_PAD
-    by = -h / 2.0 - bh / 2.0
-    if VARIANT == 2:
-        by = h / 2.0 - bh / 2.0
-    elif VARIANT == 3:
-        bw, bh, by = 800.0, 800.0, -400.0
-    out += struct.pack("<ffffII", -bw / 2.0, by, bw, bh, 0, 1)
+    pad = HITBOX_PADS[VARIANT]
+    bw, bh = w * pad, h * pad
+    # y points up for this box, so the sprite's centre is h/2 above the ground
+    out += struct.pack("<ffffII", -bw / 2.0, h / 2.0 - bh / 2.0, bw, bh, 0, 1)
     # element: symbol hash, build frame, layer hash, matrix a b c d tx ty, z
     out += struct.pack("<III", sym, 0, sym)
     out += struct.pack("<6f", 1, 0, 0, 1, 0, -h / 2.0)

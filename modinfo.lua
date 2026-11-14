@@ -22,14 +22,14 @@ configuration_options =
     {
         name = "model_variant",
         label = "Model variant (debug)",
-        hover = "Click-box experiment. 1 is the normal model; 2 and 3 are test variants",
+        hover = "Click-box experiment: the click area gets bigger from 1 to 3",
         options =
         {
-            {description = "1 (normal)", data = 1},
-            {description = "2 (test)", data = 2},
-            {description = "3 (test)", data = 3},
+            {description = "1 (smaller)", data = 1},
+            {description = "2 (medium)", data = 2},
+            {description = "3 (larger)", data = 3},
         },
-        default = 1,
+        default = 2,
     },
     {
         name = "map_amount",
