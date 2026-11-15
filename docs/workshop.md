@@ -59,6 +59,9 @@ Item, Food, Funny (use whichever of these the uploader offers)
 
 ## Changelog
 
+**1.0.8**
+- Warly sprinkles in some French
+
 **1.0.7**
 - Warly sprinkles in some French
 
