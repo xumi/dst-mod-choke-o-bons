@@ -74,8 +74,8 @@ ktech art/build/chokeobon.png images/inventoryimages/chokeobon.tex
 ktech art/build/modicon.png modicon.tex
 ```
 
-The world model (`anim/chokeobon.zip`) is a static one-frame animation generated from the same artwork by `tools/build_anim.py` (needs `ktech` and ImageMagick). The source drawing is `art/source/chokeobon.svg`. To resize the item on the ground, change `WORLD_HEIGHT` in `tools/build_anim.py` and rebuild. The size is baked into the model on purpose: scaling it in the item script made only part of it clickable.
+The world model (`anim/chokeobon.zip`) is a looping 90-frame idle animation (a gentle breathing squash and a small jiggle) generated from the same artwork by `tools/build_anim.py` (needs `ktech` and ImageMagick). The source drawing is `art/source/chokeobon.svg`. To resize the item on the ground, change `WORLD_HEIGHT` in `tools/build_anim.py` and rebuild. The size is baked into the model on purpose: scaling it in the item script made only part of it clickable.
 
 ## Status
 
-Version 1.0.4. Confirmed in game: the mod loads, the map scatter, eating (stats, the bag staying in your inventory), and the world model with its click box. Not yet confirmed in game: the Pig King bonus, the pig/merm/bunnyman drops, and the updated emotes (tears effect, voices) and break sound.
+Version 1.0.9. Confirmed in game: the mod loads, the map scatter, eating (stats, the bag staying in your inventory), and the world model with its click box. Not yet confirmed in game: the Pig King bonus, the pig/merm/bunnyman drops, and the updated emotes (tears effect, voices) and break sound.

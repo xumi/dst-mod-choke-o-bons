@@ -142,7 +142,7 @@ local function fn()
 
     inst.AnimState:SetBank("chokeobon")
     inst.AnimState:SetBuild("chokeobon")
-    inst.AnimState:PlayAnimation("idle")
+    inst.AnimState:PlayAnimation("idle", true)
 
     inst:AddTag("cattoy")
     -- Warly only eats foods tagged "preparedfood" or "pre-preparedfood" (Eater:PrefersToEat).

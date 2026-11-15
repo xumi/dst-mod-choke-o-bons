@@ -59,6 +59,9 @@ Item, Food, Funny (use whichever of these the uploader offers)
 
 ## Changelog
 
+**1.0.9**
+- The bag on the ground now breathes and jiggles a little instead of standing perfectly still
+
 **1.0.8**
 - Warly sprinkles in some French
 

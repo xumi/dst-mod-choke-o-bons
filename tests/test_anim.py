@@ -7,7 +7,7 @@ re-check it in the game, then update the golden values below.
 
 Formats follow Klei's compiler (ds_mod_tools: buildanimation.py).
 """
-import struct, sys, zipfile
+import math, struct, sys, zipfile
 
 ZIP = "anim/chokeobon.zip"
 NAME = "chokeobon"
@@ -16,7 +16,8 @@ NAME = "chokeobon"
 # bottom-edge quirk fixed.
 GOLDEN_BUILD_BOX = (0.0, 0.0, 96.0, 150.0)
 GOLDEN_ANIM_BOX = (-10.0, -90.0, 116.0, 180.0)
-GOLDEN_MATRIX = (1.0, 0.0, 0.0, 1.0, 0.0, -75.0)
+GOLDEN_MATRIX = (1.0, 0.0, 0.0, 1.0, 0.0, -75.0)   # the rest pose, frame 0
+FRAMES = 90          # a 3 second loop at 30 fps (gentle breathing plus a small jiggle)
 
 
 def strhash(s):
@@ -107,8 +108,8 @@ def main():
     if version != 4:
         problems.append("anim.bin: version %s, expected 4" % version)
     elements, frames, events, anims = r.take("IIII")
-    if (elements, frames, events, anims) != (1, 1, 0, 1):
-        problems.append("anim.bin counts %s" % ((elements, frames, events, anims),))
+    if (elements, frames, events, anims) != (FRAMES, FRAMES, 0, 1):
+        problems.append("anim.bin counts %s, expected %s" % ((elements, frames, events, anims), (FRAMES, FRAMES, 0, 1)))
     if r.string() != "idle":
         problems.append("anim.bin: the animation must be called 'idle'")
     facing = r.take("B")
@@ -116,19 +117,48 @@ def main():
     if bank != strhash(NAME):
         problems.append("anim.bin: bank hash does not match '%s'" % NAME)
     rate = r.take("f")
-    r.take("I")  # frames
-    abox = r.take("ffff")
-    if not approx(abox, GOLDEN_ANIM_BOX):
-        problems.append("anim frame box %s, expected %s" % (abox, GOLDEN_ANIM_BOX))
-    r.take("I")  # events
-    r.take("I")  # elements
-    el_hash, el_frame, layer = r.take("III")
-    if el_hash != strhash(NAME) or layer != strhash(NAME) or el_frame != 0:
-        problems.append("anim.bin: element does not reference the build symbol")
-    mat = r.take("6f")
-    if not approx(mat, GOLDEN_MATRIX):
-        problems.append("element matrix %s, expected %s" % (mat, GOLDEN_MATRIX))
-    r.take("f")  # z
+    if abs(rate - 30.0) > 1e-3:
+        problems.append("frame rate %s, expected 30" % rate)
+    nframes = r.take("I")
+    if nframes != FRAMES:
+        problems.append("%s frames, expected %s" % (nframes, FRAMES))
+    sprite_h = GOLDEN_BUILD_BOX[3]
+    mats = []
+    for i in range(nframes):
+        abox = r.take("ffff")
+        if not approx(abox, GOLDEN_ANIM_BOX):
+            problems.append("frame %d box %s, expected the same click box %s in every frame" % (i, abox, GOLDEN_ANIM_BOX))
+            break
+        r.take("I")  # events
+        r.take("I")  # elements
+        el_hash, el_frame, layer = r.take("III")
+        if el_hash != strhash(NAME) or layer != strhash(NAME) or el_frame != 0:
+            problems.append("frame %d: element does not reference the build symbol" % i)
+            break
+        mats.append(r.take("6f"))
+        r.take("f")  # z
+    if len(mats) == FRAMES:
+        if not approx(mats[0], GOLDEN_MATRIX):
+            problems.append("rest pose (frame 0) is %s, expected %s" % (mats[0], GOLDEN_MATRIX))
+        for i, (a_, b_, c_, d_, tx, ty) in enumerate(mats):
+            # the bottom centre of the sprite must stay on the ground (0, 0) in every frame
+            bx, by = b_ * sprite_h / 2 + tx, d_ * sprite_h / 2 + ty
+            if abs(bx) > 0.01 or abs(by) > 0.01:
+                problems.append("frame %d: the bag's base moved off the ground (%.3f, %.3f)" % (i, bx, by))
+                break
+            # the motion must stay small: under 6 degrees, scale within 5%
+            angle = abs(math.degrees(math.atan2(c_, a_)))
+            if angle > 6.0 or not (0.95 <= d_ <= 1.05) or not (0.95 <= a_ <= 1.05):
+                problems.append("frame %d moves too much (angle %.1f deg, scale %.3f/%.3f)" % (i, angle, a_, d_))
+                break
+        # the loop must not jump: consecutive frames, including the last-to-first seam, differ a little
+        for i in range(FRAMES):
+            m1, m2 = mats[i], mats[(i + 1) % FRAMES]
+            if max(abs(x - y) for x, y in zip(m1[:4], m2[:4])) > 0.08:
+                problems.append("jump between frame %d and %d" % (i, (i + 1) % FRAMES))
+                break
+        if all(approx(m, mats[0]) for m in mats):
+            problems.append("every frame is identical: the animation is static")
     count = r.take("I")
     table = {}
     for _ in range(count):
@@ -142,7 +172,7 @@ def main():
         for p in problems:
             print("  -", p)
         return 1
-    print("ok    anim/chokeobon.zip matches the model confirmed in game")
+    print("ok    anim/chokeobon.zip: confirmed click box and rest pose, %d-frame idle loop within limits" % FRAMES)
     return 0
 
 

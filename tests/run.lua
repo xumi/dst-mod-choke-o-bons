@@ -515,9 +515,14 @@ test("the item has the pieces the game needs (food type, icon, model)", function
     eq(item.components.inventoryitem.atlasname, "images/inventoryimages/chokeobon.xml", "atlas")
     check(item.components.edible.oneaten ~= nil, "oneaten hook")
     check(item.components.edible.handleremovefn ~= nil, "handleremovefn (without it the game removes the bag on every bite)")
-    local bank = nil
-    for _, c in ipairs(item.AnimState.calls) do if c[1] == "SetBank" then bank = c[2] end end
+    local bank, played, looped = nil, nil, nil
+    for _, c in ipairs(item.AnimState.calls) do
+        if c[1] == "SetBank" then bank = c[2] end
+        if c[1] == "PlayAnimation" then played, looped = c[2], c[3] end
+    end
     eq(bank, "chokeobon", "animation bank")
+    eq(played, "idle", "animation played")
+    eq(looped, true, "the idle animation must loop (otherwise the bag stands frozen after one cycle)")
 end)
 
 test("Warly can eat it: it carries the tag his diet requires (Eater:PrefersToEat)", function()

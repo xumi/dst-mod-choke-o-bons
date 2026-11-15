@@ -13,7 +13,7 @@ buildanimation.py):
     is what gave an accurate click area in game.
 
 Needs `ktech` on the PATH. The sprite is trimmed, fitted into a 256x256 atlas
-and shown as a single "idle" frame in the "chokeobon" bank/build.
+and shown as a looping "idle" animation (a gentle breathing squash and a small jiggle) in the "chokeobon" bank/build.
 """
 import math, os, struct, subprocess, sys, zipfile, tempfile
 
@@ -35,6 +35,35 @@ def anim_box(w, h, ty):
     bx += bw / 2.0 - nw / 2.0
     by += bh / 2.0 - nh / 2.0
     return bx, by, nw, nh
+
+
+FRAMES = 90        # a 3 second loop at 30 fps
+FRAME_RATE = 30.0
+
+
+def pose(i):
+    """(angle in radians, x scale, y scale) of frame i. Frame 0 is the rest pose.
+
+    A slow breathing squash all the time, plus a quick damped jiggle at the start of each
+    loop. Both are small so the item still reads as a bag lying on the ground.
+    """
+    wob = math.exp(-i / 9.0) * math.sin(2 * math.pi * i / 12.0)
+    theta = math.radians(5.0) * wob
+    squash = 0.03 * abs(wob)
+    breathe = 0.012 * math.sin(2 * math.pi * i / FRAMES)
+    return theta, 1.0 + 0.7 * squash, (1.0 - squash) * (1.0 + breathe)
+
+
+def element_matrix(i, h):
+    """Matrix (a, b, c, d, tx, ty) for frame i, keeping the bottom centre of the sprite on the ground.
+
+    x' = a*x + b*y + tx,  y' = c*x + d*y + ty  (see krane's loader). The sprite is centred on its own
+    origin, so the translation is chosen to map its bottom centre (0, h/2) back to (0, 0).
+    """
+    theta, sx, sy = pose(i)
+    a, b = math.cos(theta) * sx, -math.sin(theta) * sy
+    c, d = math.sin(theta) * sx, math.cos(theta) * sy
+    return a, b, c, d, -b * h / 2.0, -d * h / 2.0
 
 
 def strhash(s):
@@ -77,19 +106,21 @@ def build_bin(w, h, u0, v0, u1, v1):
 def anim_bin(w, h):
     sym = strhash(NAME)
     out = b"ANIM" + struct.pack("<i", 4)
-    out += struct.pack("<IIII", 1, 1, 0, 1)       # elements, frames, events, anims
+    out += struct.pack("<IIII", FRAMES, FRAMES, 0, 1)   # elements, frames, events, anims
     out += lstr("idle")
     out += struct.pack("<B", 0xFF)                # facing: any
     out += struct.pack("<I", strhash(NAME))       # bank
-    out += struct.pack("<f", 30.0)
-    out += struct.pack("<I", 1)                   # frames
-    # frame: bbox, events, elements
+    out += struct.pack("<f", FRAME_RATE)
+    out += struct.pack("<I", FRAMES)              # frames
+    # The click box is the same in every frame, so the area does not jitter while the bag moves.
     bx, by, bw, bh = anim_box(int(round(w)), int(round(h)), -h / 2.0)
-    out += struct.pack("<ffffII", bx, by, float(bw), float(bh), 0, 1)
-    # element: symbol hash, build frame, layer hash, matrix a b c d tx ty, z
-    out += struct.pack("<III", sym, 0, sym)
-    out += struct.pack("<6f", 1, 0, 0, 1, 0, -h / 2.0)
-    out += struct.pack("<f", 0.0)
+    for i in range(FRAMES):
+        # frame: bbox, events, elements
+        out += struct.pack("<ffffII", bx, by, float(bw), float(bh), 0, 1)
+        # element: symbol hash, build frame, layer hash, matrix a b c d tx ty, z
+        out += struct.pack("<III", sym, 0, sym)
+        out += struct.pack("<6f", *element_matrix(i, h))
+        out += struct.pack("<f", 0.0)
     out += struct.pack("<I", 1) + struct.pack("<I", sym) + lstr(NAME)
     return out
 
